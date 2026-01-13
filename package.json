@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "nodemon": "^3.1.11"
+  },
+  "name": "5_full_stackpractice",
+  "version": "1.0.0",
+  "description": "practice node js and expressJS",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tirthaGhosh91213/Revision_Backend.git"
+  },
+  "author": "Tirtha Ghosh",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tirthaGhosh91213/Revision_Backend/issues"
+  },
+  "homepage": "https://github.com/tirthaGhosh91213/Revision_Backend#readme"
+}

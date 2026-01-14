@@ -4,6 +4,7 @@
   },
   "name": "5_full_stackpractice",
   "version": "1.0.0",
+  "type": "module",
   "description": "practice node js and expressJS",
   "main": "index.js",
   "devDependencies": {},

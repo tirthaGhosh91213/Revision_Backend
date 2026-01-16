@@ -8,21 +8,13 @@ const rl=readline.createInterface({
   output:process.stdout,
 })
 
-// const pathName=path.join(__dirname,()=>{
-//   rl.question("Enter the file name : ",handelRequest)
-// const handelRequest=()=>{
-//   fs.writeFileSync(pathName,"utf-8")
-// }
-// })
-
-// const writeFile=fs.writeFileSync(pathName,"Hey Tirtha Let's strongly come back ","utf-8")
-// console.log(writeFile)
-
-// const readFile=fs.readFileSync(pathName,"utf-8")
-
-// console.log(readFile)
-
-const pathName=path.join()
-rl.question("Enter the file name : ",()=>{
-  fs.writeFileSync(pathName,"utf-8")
+const fileCreate=()=>{
+  rl.question("Enter the file name : ",(fileName)=>{
+    rl.question("Enter yout content here : ",(content)=>{
+      fs.writeFileSync(fileName,content,"utf-8")
+      rl.close()
+    })
 })
+}
+fileCreate()
+

@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>URL Shortener UI</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      background: radial-gradient(circle at top left, #5ee7df, transparent 40%),
+                  radial-gradient(circle at bottom right, #b490ff, transparent 40%),
+                  #0b0f19;
+      color: #fff;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 480px;
+      padding: 26px;
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.06);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35);
+      animation: pop 0.6s ease;
+    }
+
+    @keyframes pop {
+      from { transform: translateY(15px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    h1 {
+      font-size: 26px;
+      text-align: center;
+      margin-bottom: 18px;
+      letter-spacing: 0.5px;
+    }
+
+    .subtext {
+      text-align: center;
+      opacity: 0.85;
+      font-size: 13px;
+      margin-bottom: 22px;
+      line-height: 1.4;
+    }
+
+    .field {
+      position: relative;
+      margin-bottom: 16px;
+    }
+
+    .field input {
+      width: 100%;
+      padding: 16px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, 0.06);
+      outline: none;
+      color: #fff;
+      font-size: 14px;
+      transition: 0.25s;
+    }
+
+    .field input:focus {
+      border-color: #66e0ff;
+      box-shadow: 0 0 0 3px rgba(102, 224, 255, 0.18);
+    }
+
+    .field label {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 13px;
+      opacity: 0.7;
+      transition: 0.25s;
+      pointer-events: none;
+      background: transparent;
+    }
+
+    .field input:focus + label,
+    .field input:not(:placeholder-shown) + label {
+      top: 6px;
+      font-size: 11px;
+      opacity: 0.9;
+      color: #66e0ff;
+    }
+
+    .error {
+      font-size: 12px;
+      color: #ff9a9a;
+      margin-top: -8px;
+      margin-bottom: 12px;
+      display: none;
+    }
+
+    .btn {
+      width: 100%;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      color: #0b0f19;
+      background: linear-gradient(90deg, #66e0ff, #b490ff);
+      transition: 0.25s;
+      box-shadow: 0 10px 25px rgba(102, 224, 255, 0.16);
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 30px rgba(180, 144, 255, 0.22);
+    }
+
+    .btn:active {
+      transform: scale(0.98);
+    }
+
+    .list {
+      margin-top: 22px;
+    }
+
+    .list h2 {
+      font-size: 18px;
+      margin-bottom: 14px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .badge {
+      font-size: 12px;
+      background: rgba(255, 255, 255, 0.08);
+      padding: 5px 10px;
+      border-radius: 999px;
+      border: 1px solid rgba(255, 255, 255, 0.12);
+    }
+
+    .item {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: 14px;
+      padding: 12px;
+      margin-bottom: 12px;
+      transition: 0.25s;
+      display: flex;
+      gap: 10px;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .item:hover {
+      transform: translateY(-2px);
+      border-color: rgba(102, 224, 255, 0.35);
+    }
+
+    .links {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      width: 100%;
+      overflow: hidden;
+    }
+
+    .links small {
+      opacity: 0.75;
+      font-size: 12px;
+    }
+
+    .links a {
+      color: #66e0ff;
+      text-decoration: none;
+      font-size: 13px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .copyBtn {
+      padding: 9px 12px;
+      border-radius: 10px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      background: rgba(255, 255, 255, 0.07);
+      color: #fff;
+      cursor: pointer;
+      font-size: 12px;
+      transition: 0.25s;
+      flex-shrink: 0;
+    }
+
+    .copyBtn:hover {
+      background: rgba(255, 255, 255, 0.12);
+      border-color: rgba(255, 255, 255, 0.25);
+    }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      left: 50%;
+      transform: translateX(-50%);
+      background: rgba(0, 0, 0, 0.65);
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      color: white;
+      padding: 10px 16px;
+      border-radius: 12px;
+      font-size: 13px;
+      opacity: 0;
+      pointer-events: none;
+      transition: 0.3s;
+    }
+
+    .toast.show {
+      opacity: 1;
+      transform: translateX(-50%) translateY(-6px);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>🔗 URL Shortener</h1>
+    <p class="subtext">
+      Paste your long URL and generate a clean short link.<br>
+      You can also set a custom short code.
+    </p>
+
+    <div class="field">
+      <input id="longUrl" type="text" placeholder=" " />
+      <label>Enter URL</label>
+    </div>
+
+    <div class="field">
+      <input id="customCode" type="text" placeholder=" " />
+      <label>Custom Short URL (optional)</label>
+    </div>
+
+    <p class="error" id="errorText">⚠ Please enter a valid URL.</p>
+
+    <button class="btn" id="shortBtn">Shorten URL</button>
+
+    <div class="list">
+      <h2>
+        Shortened URLs
+        <span class="badge" id="countBadge">0</span>
+      </h2>
+
+      <div id="resultList"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast">Copied ✅</div>
+
+  <script>
+    const longUrl = document.getElementById("longUrl");
+    const customCode = document.getElementById("customCode");
+    const shortBtn = document.getElementById("shortBtn");
+    const resultList = document.getElementById("resultList");
+    const errorText = document.getElementById("errorText");
+    const toast = document.getElementById("toast");
+    const countBadge = document.getElementById("countBadge");
+
+    let count = 0;
+
+    function isValidUrl(url) {
+      try {
+        new URL(url);
+        return true;
+      } catch (err) {
+        return false;
+      }
+    }
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 1400);
+    }
+
+    shortBtn.addEventListener("click", () => {
+      const urlValue = longUrl.value.trim();
+      const codeValue = customCode.value.trim() || "short" + Math.floor(Math.random() * 9999);
+
+      if (!urlValue || !isValidUrl(urlValue)) {
+        errorText.style.display = "block";
+        return;
+      } else {
+        errorText.style.display = "none";
+      }
+
+      const shortLink = `http://localhost:3000/${codeValue}`;
+
+      count++;
+      countBadge.textContent = count;
+
+      const item = document.createElement("div");
+      item.className = "item";
+
+      item.innerHTML = `
+        <div class="links">
+          <small>Short Link</small>
+          <a href="${shortLink}" target="_blank">${shortLink}</a>
+          <small>Original</small>
+          <a href="${urlValue}" target="_blank">${urlValue}</a>
+        </div>
+        <button class="copyBtn">Copy</button>
+      `;
+
+      const copyBtn = item.querySelector(".copyBtn");
+      copyBtn.addEventListener("click", async () => {
+        await navigator.clipboard.writeText(shortLink);
+        showToast("Short URL copied ✅");
+      });
+
+      resultList.prepend(item);
+
+      longUrl.value = "";
+      customCode.value = "";
+    });
+  </script>
+
+</body>
+</html>

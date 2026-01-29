@@ -231,7 +231,7 @@
 <body>
 
   <div class="container">
-    <form id="ShortenerURL">
+    <form id="ShortenerURL" >
     <h1>🔗 URL Shortener</h1>
     <p class="subtext">
       Paste your long URL and generate a clean short link.<br>
@@ -244,7 +244,7 @@
     </div>
 
     <div class="field">
-      <input id="customCode" type="text" name="shortcode" placeholder=" " required/>
+      <input id="customCode" type="text" name="code" placeholder=" " required/>
       <label>Custom Short URL </label>
     </div>
 
@@ -263,29 +263,32 @@
     </div>
   </div>
   <script>
-    document.getElementById('ShortenerURL').addEventListener('submit',async(event)=>{
+    document.getElementById('ShortenerURL').addEventListener('submit', async (event) => {
       event.preventDefault();
-      const formData = new FormData(event.target)
-      const url=formData.get('url')
-      const shortcode=formData.get('shortcode')
-      console.log(shortcode,url)
+
+      const formData = new FormData(event.target);
+      const url = formData.get('url');
+      const shortcode = formData.get('code');
+
       try {
-        const response = await fetch("/shortner",{
-          method:"POST",
-          headers:{"Content-Type":"application/json"},
-          body:JSON.stringify({url, shortcode})
-        })
-        if(response.ok){
-          alert("Uploded successfully")
-        }
-        else{
-          const errorMaasge = await response.text()
-          alert(errorMaasge)
+        const response = await fetch("/shortner", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ url, shortcode })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          alert("Short URL created: " + data.shortcode);
+          event.target.reset()
+        } else {
+          alert(data.message || "Error");
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    })
+    });
   </script>
 
 </body>

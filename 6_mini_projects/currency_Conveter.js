@@ -10,7 +10,7 @@ const currencyRate=(amount,rate)=>{
 return amount*rate
 }
 const API_Key= "cc5c8ab3563a429a27eec6cb"
-const URL=` https://v6.exchangerate-api.com/v6/${API_Key}/latest/USD`
+const URL=`https://v6.exchangerate-api.com/v6/${API_Key}/latest/USD`
 https.get(URL,(res)=>{
   let data = "";
   res.on('data',(chunk)=>{

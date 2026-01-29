@@ -263,12 +263,28 @@
     </div>
   </div>
   <script>
-    document.getElementById('ShortenerURL').addEventListener('submit',(event)=>{
+    document.getElementById('ShortenerURL').addEventListener('submit',async(event)=>{
       event.preventDefault();
       const formData = new FormData(event.target)
-      const url=formData.get('shortcode')
-      const data=formData.get('url')
-      console.log(data,url)
+      const url=formData.get('url')
+      const shortcode=formData.get('shortcode')
+      console.log(shortcode,url)
+      try {
+        const response = await fetch("/shortner",{
+          method:"POST",
+          headers:{"Content-Type":"application/json"},
+          body:JSON.stringify({url, shortcode})
+        })
+        if(response.ok){
+          alert("Uploded successfully")
+        }
+        else{
+          const errorMaasge = await response.text()
+          alert(errorMaasge)
+        }
+      } catch (error) {
+        console.log(error)
+      }
     })
   </script>
 

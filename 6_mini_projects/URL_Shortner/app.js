@@ -2,23 +2,24 @@
 import { readFile, writeFile } from "fs/promises";
 import { createServer } from "http";
 import path from "path";
-import { json } from "stream/consumers";
+import crypto from "crypto";
+
 
 const PORT =3002;
 const DETAIL_PATH=path.join("data","links.json")
 
-const saveLinks=async()=>{
-
+const saveLinks= async(links)=>{
+  await writeFile(DETAIL_PATH,JSON.stringify(links))
 }
 
 const loadLinks= async()=>{
   try {
     const data= await readFile(DETAIL_PATH,'utf-8')
-    return json.parse(data)
+    return JSON.parse(data)
 
   } catch (error) {
     if(error.code==="ENOENT"){
-     await writeFile(DETAIL_PATH,JSON.stringify(data))
+     await writeFile(DETAIL_PATH,JSON.stringify({}))
      return {}
     }
     throw new error
@@ -43,7 +44,7 @@ const server =createServer( async(req , res)=>{
 
   if(req.method==="POST" && req.url==="/shortner"){
     const links = await loadLinks()
-    const data=""
+    let data=""
     
     req.on('data',(chunk)=>{
       data=data+chunk;
@@ -63,8 +64,11 @@ const server =createServer( async(req , res)=>{
       }
       links[findshortcode]=url;
       await saveLinks(links)
+        res.writeHead(400,{ "Content-Type": "application/json" })
+  res.end(JSON.stringify({sucess:true,shortcode:findshortcode}))
     })
   }
+
   
 })
 

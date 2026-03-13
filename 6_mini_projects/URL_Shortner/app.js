@@ -30,7 +30,10 @@ const server = createServer(async (req, res) => {
     res.writeHead(200, { "Content-Type": "text/html" });
     return res.end(data);
   }
-
+else if(req.url==='/links'){
+  const links = await loadLinks();
+  
+}
   if (req.method === "POST" && req.url === "/shortner") {
     const links = await loadLinks();
     let body = "";

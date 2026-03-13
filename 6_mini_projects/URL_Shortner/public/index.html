@@ -280,6 +280,7 @@
         const data = await response.json();
 
         if (response.ok) {
+          fetchShortedURL()
           alert("Short URL created: " + data.shortcode);
           event.target.reset()
         } else {
@@ -289,6 +290,7 @@
         console.log(error);
       }
     });
+    fetchShortedURL()
   </script>
 
 </body>

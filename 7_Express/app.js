@@ -1,4 +1,5 @@
 import express from "express"
+import { PORT } from "./env.js";
 
 const app=express();
 
@@ -9,7 +10,7 @@ app.get("/",(req,res)=>{
 app.get("/about",(req,res)=>{
   return res.send("<h1>I am a full stack developer</h1>")
 })
-const PORT=process.env.PORT||6008;
+// const PORT=process.env.PORT||6008;
 app.listen(PORT,()=>{
   console.log(`Server running at port number ${PORT}`)
 })

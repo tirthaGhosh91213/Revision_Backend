@@ -1,8 +1,15 @@
 import express from 'express'
-import { PORT } from '../env.js';
+
+import { PORT } from '../env.js';  // relative path
+
 import path from 'path'
 
 const app=express();
+
+// Absolute path
+const absolutePath=path.join(import.meta.dirname,'public');
+
+app.use(express.static(absolutePath))
 
 app.get("/",(req,res)=>{
 

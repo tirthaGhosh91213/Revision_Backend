@@ -20,7 +20,29 @@ app.get("/",(req,res)=>{
 const homepagepath=path.join(import.meta.dirname,'public','index.html')
 res.sendFile(homepagepath)
 })
+//Route parameter 
 
+app.get("/profile/:userName",(req,res)=>{
+  console.log(req.params.userName)
+  res.send(`The name of the user is ${req.params.userName}`)
+})
+
+app.get("/profile/:userName/:article",(req,res)=>{
+  console.log(req.params.userName)
+  const formatURL=req.params.article.replace(/-/g," ")
+  res.send(`The name of the user is ${req.params.userName} and the Article is ${formatURL}`)
+})
+
+// Query  parameter 
+app.get("/products",(req,res)=>{
+  console.log(req.query)
+  res.send(`The name of the prduct is ${req.query.product}`)
+})
+
+app.get("/pages",(req,res)=>{
+  console.log(req.query)
+  res.send(`The page number is ${req.query.page} and the limit is ${req.query.limit}`)
+})
 app.listen(PORT,()=>{
   console.log(`Server running at http://localhost:${PORT}`)
 })

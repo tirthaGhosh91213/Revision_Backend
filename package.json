@@ -1,6 +1,7 @@
 {
   "dependencies": {
     "chalk": "^5.6.2",
+    "express": "^5.2.1",
     "nodemon": "^3.1.11"
   },
   "name": "5_full_stackpractice",
@@ -9,7 +10,9 @@
   "description": "practice node js and expressJS",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev":"node --watch app.js",
+    "start":"node app.js"
   },
   "repository": {
     "type": "git",
